@@ -109,7 +109,7 @@ local all(
   settings_configmap: ok.ConfigMap('elasticsearch-hq-settings', namespace) {
     data: {
       'settings.json': |||
-        { "SQLALCHEMY_DATABASE_URI" :  "sqlite://etc/elastic-hq/data/elastic-hq.db" }
+        { "SQLALCHEMY_DATABASE_URI" :  "sqlite:////etc/elastic-hq/data/elastic-hq.db" }
       |||,
     },
   },
