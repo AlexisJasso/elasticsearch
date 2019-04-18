@@ -59,7 +59,7 @@ local all(
               },
               volumeMounts: [
                 { name: 'db', mountPath: '/etc/elastic-hq/data' },
-                { name: 'settings', mountPath: '/etc/elastic-hq/settings.json' },
+                { name: 'settings', mountPath: '/etc/elastic-hq/settings.json', subPath: 'settings.json' },
               ],
             },
           ],
