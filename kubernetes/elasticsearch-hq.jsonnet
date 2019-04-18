@@ -46,7 +46,7 @@ local all(
               ports: [
                 {
                   containerPort: 5000,
-                  name: 'elasticsearch-hq'
+                  name: 'elastichq'
                 },
               ],
               resources: {
@@ -59,7 +59,7 @@ local all(
               },
               volumeMounts: [
                 { name: 'db', mountPath: '/etc/elastic-hq/data' },
-                { name: 'settings', mountPath: '/etc/elastic-hq/settings.json' },
+                { name: 'settings', mountPath: '/etc/elastic-hq/settings.json', subPath: 'settings.json' },
               ],
             },
           ],
@@ -109,7 +109,7 @@ local all(
   settings_configmap: ok.ConfigMap('elasticsearch-hq-settings', namespace) {
     data: {
       'settings.json': |||
-        { "SQLALCHEMY_DATABASE_URI" :  "sqlite://etc/elastic-hq/data/elastic-hq.db" }
+        { "SQLALCHEMY_DATABASE_URI" :  "sqlite:////etc/elastic-hq/data/elastic-hq.db" }
       |||,
     },
   },
