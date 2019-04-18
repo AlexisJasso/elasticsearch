@@ -46,7 +46,7 @@ local all(
               ports: [
                 {
                   containerPort: 5000,
-                  name: 'elasticsearch-hq'
+                  name: 'elastichq'
                 },
               ],
               resources: {
