@@ -33,7 +33,7 @@ local pipeline = c.newPipeline(
           debug = true,
           cluster_name = cluster,
           namespace = namespace,
-          manifests = ['kubernetes/*.jsonnet'],
+          manifests = ['kubernetes/elasticsearch-hq.jsonnet'],
           kubecfg_vars = {
             namespace: namespace,
             ts: '$(date +%s)',
