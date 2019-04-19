@@ -2,7 +2,7 @@ local ok = import 'kubernetes/outreach.libsonnet';
 
 local all(
   name = 'es-prom-exporter',
-  namespace = 'monitoring',
+  namespace = std.extVar('namespace'),
 ) = { 
   deployment: ok.Deployment(name, namespace) {
     spec+: {

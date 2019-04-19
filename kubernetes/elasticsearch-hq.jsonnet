@@ -2,7 +2,7 @@ local ok = import 'kubernetes/outreach.libsonnet';
 
 local all(
   name = 'elasticsearch-hq',
-  namespace = 'elasticsearch-hq',
+  namespace = std.extVar('namespace'),
   host = 'elastichq.outreach.cloud',
 ) = {
   deployment: ok.Deployment(name, namespace) {
