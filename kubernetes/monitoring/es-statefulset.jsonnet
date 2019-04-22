@@ -101,6 +101,7 @@ local all(name, namespace) = {
                 { name: 'ES_JAVA_OPTS', value: '-Xms13g -Xmx13g', },
                 { name: 'NAMESPACE', value: namespace, },
                 { name: 'discovery.zen.ping.unicast.hosts', value: 'es-logging.<%= cluster.global_name %>.intor.io', },
+                { name: 'cluster.name', value: 'k8s-%s-%s' % [cluster.environment, cluster.region] },
               ],
             },
           ],
