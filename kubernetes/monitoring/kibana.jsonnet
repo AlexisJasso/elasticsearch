@@ -49,10 +49,10 @@ local all(name, namespace) = {
             ok.Container(name){
               image: 'docker.elastic.co/kibana/kibana-oss:6.6.1',
               env: [
-                { name: 'SERVER_NAME', value: host},
-              ],
-              envFrom: [
-                { configMapRef: { name: 'kibana-config'} },
+                { name: 'SERVER_NAME', value: host },
+                { name: 'ELASTICSEARCH_REQUESTTIMEOUT', value: '600000' },
+                { name: 'ELASTICSEARCH_URL', value: 'http://elasticsearch-logging:9200' },
+                { name: 'MAP_INCLUDEELASTICMAPSSERVICE', value: 'false' },
               ],
               livenessProbe: {
                 tcpSocket: { port: 'kibana' },
@@ -86,12 +86,6 @@ local all(name, namespace) = {
         },
       },
     },
-  },
-  secret: ok.Secret('kibana-oauth-proxy', namespace, app=name) {
-    data_: import '<%= cluster.root_cluster.vault.download_file("kube_factory/kibana-oauth-proxy", "/tmp/#{cluster.name}/kibana-creds.json") %>',
-  },
-  configmap: ok.ConfigMap('kibana-config', namespace, app=name) {
-    data: import '<%= cluster.root_cluster.vault.download_file("kube_factory/kibana-config", "/tmp/#{cluster.name}/kibana-config.json") %>',
   },
   service: ok.Service(name, namespace) {
     metadata+: { namespace: namespace },
