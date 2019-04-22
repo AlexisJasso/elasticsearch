@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: elasticsearch-logging
+  namespace: monitoring
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-internal: "true"
+    external-dns.alpha.kubernetes.io/hostname: es-logging.<%= cluster.global_name %>.intor.io
+  labels:
+    k8s-app: elasticsearch-logging
+    kubernetes.io/cluster-service: "true"
+    addonmanager.kubernetes.io/mode: Reconcile
+    kubernetes.io/name: "Elasticsearch"
+spec:
+  ports:
+  - port: 9200
+    protocol: TCP
+    targetPort: db
+    name: db
+  - port: 9300
+    protocol: TCP
+    targetPort: transport
+    name: transport
+  selector:
+    app: elasticsearch-logging
+  type: LoadBalancer
+  loadBalancerSourceRanges:
+  - 10.0.0.0/8
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: es
+  labels:
+    service: elasticsearch-discovery
+  namespace: monitoring
+spec:
+  clusterIP: None
+  ports:
+  - port: 9200
+    name: http
+  - port: 9300
+    name: transport
+  selector:
+    app: elasticsearch-logging
