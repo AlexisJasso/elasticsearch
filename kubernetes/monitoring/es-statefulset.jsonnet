@@ -147,8 +147,8 @@ local all(name, namespace) = {
     },
     spec+: {
       ports:[
-        { port: '9200', protocol: 'TCP', targetPort: 'db', name: 'db' },
-        { port: '9300', protocol: 'TCP', targetPort: 'transport', name: 'transport' },
+        { port: 9200, protocol: 'TCP', targetPort: 'db', name: 'db' },
+        { port: 9300, protocol: 'TCP', targetPort: 'transport', name: 'transport' },
       ],
       selector: { app: 'elasticsearch-logging' },
       type: 'LoadBalancer',
