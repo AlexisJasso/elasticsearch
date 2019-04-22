@@ -100,7 +100,7 @@ local all(name, namespace) = {
                 { name: 'ingest-geoip.enabled', value: 'false', },
                 { name: 'ES_JAVA_OPTS', value: '-Xms13g -Xmx13g', },
                 { name: 'NAMESPACE', value: namespace, },
-                { name: 'discovery.zen.ping.unicast.hosts', value: 'es-logging.<%= cluster.global_name %>.intor.io', },
+                { name: 'discovery.zen.ping.unicast.hosts', value: 'es-logging.%s.intor.io' % [cluster.global_name], },
                 { name: 'cluster.name', value: 'k8s-%s-%s' % [cluster.environment, cluster.region] },
               ],
             },
@@ -130,6 +130,29 @@ local all(name, namespace) = {
           },
         },
       }],
+    },
+  },
+  service: ok.Service(name, namespace) {
+    metadata+: {
+      annotations+: {
+        'service.beta.kubernetes.io/aws-load-balancer-internal': 'true',
+        'external-dns.alpha.kubernetes.io/hostname': 'es-logging.%s.intor.io' % [cluster.global_name],
+      },
+      labels+: {
+        'k8s-app': 'elasticsearch-logging',
+        'kubernetes.io/cluster-service': 'true',
+        'addonmanager.kubernetes.io/mode': 'Reconcile',
+        'kubernetes.io/name': 'Elasticsearch',
+      },
+    },
+    spec+: {
+      ports:[
+        { port: '9200', protocol: 'TCP', targetPort: 'db', name: 'db' },
+        { port: '9300', protocol: 'TCP', targetPort: 'transport', name: 'transport' },
+      ],
+      selector: { app: 'elasticsearch-logging' },
+      type: 'LoadBalancer',
+      loadBalancerSourceRanges: ['10.0.0.0/8'],
     },
   },
 };
