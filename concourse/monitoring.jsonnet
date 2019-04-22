@@ -66,7 +66,7 @@ local pipeline = c.newPipeline(
             ts: '$(date +%s)',
           },
           vault_secrets = [
-            'monitoring/kibana/secrets',
+            'deploy/monitoring/kibana/secrets',
           ],
           params = {
             validation_retries: "100",
