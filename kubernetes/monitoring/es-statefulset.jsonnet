@@ -95,6 +95,7 @@ local all(name, namespace) = {
                 { name: 'network.tcp.keep_alive', value: 'true', },
                 { name: 'network.host', value: '0.0.0.0', },
                 { name: 'network.publish_host', value: '_eth0_', },
+                { name: 'thread_pool.bulk.queue_size', value: '2000', },
                 { name: 'thread_pool.write.queue_size', value: '2000', },
                 { name: 'transport.ping_schedule', value: '5s', },
                 { name: 'ingest-geoip.enabled', value: 'false', },
