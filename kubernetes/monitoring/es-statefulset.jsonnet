@@ -7,6 +7,12 @@ local all(name, namespace) = {
       replicas: 3,
       serviceName: 'es',
       template+: {
+        metadata+: {
+          annotations+: {
+            'prometheus.io/port': '9114',
+            'prometheus.io/scrape': 'true',
+          },
+        },
         spec+: {
           hostNetwork: true,
           serviceAccountName: name,
@@ -78,10 +84,10 @@ local all(name, namespace) = {
               image: 'docker.elastic.co/elasticsearch/elasticsearch-oss:6.6.1',
               resources: {
                 limits: {
-                  memory: '16Gi',
+                  memory: '34Gi',
                 },
                 requests: {
-                  cpu: '4',
+                  cpu: '6',
                 },
               },
               ports: [
@@ -99,10 +105,29 @@ local all(name, namespace) = {
                 { name: 'thread_pool.write.queue_size', value: '2000', },
                 { name: 'transport.ping_schedule', value: '5s', },
                 { name: 'ingest-geoip.enabled', value: 'false', },
-                { name: 'ES_JAVA_OPTS', value: '-Xms13g -Xmx13g', },
+                { name: 'ES_JAVA_OPTS', value: '-Xms30g -Xmx30g', },
                 { name: 'NAMESPACE', value: namespace, },
                 { name: 'discovery.zen.ping.unicast.hosts', value: 'es-logging.%s.intor.io' % [cluster.global_name], },
                 { name: 'cluster.name', value: 'k8s-%s-%s' % [cluster.environment, cluster.region] },
+              ],
+            },
+            ok.Container('exporter') {
+              image: 'justwatch/elasticsearch_exporter:1.0.2',
+              command: [
+                '/bin/elasticsearch_exporter',
+                '-es.uri=http://localhost:9200',
+                '-web.listen-address=:9114',
+              ],
+              resources: {
+                limits: {
+                  memory: '100Mi',
+                },
+                requests: {
+                  cpu: '25m',
+                },
+              },
+              ports: [
+                { name: 'metrics', protocol: 'TCP', containerPort: 9114, },
               ],
             },
           ],
