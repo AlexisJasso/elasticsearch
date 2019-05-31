@@ -11,7 +11,7 @@ local all(
         metadata+: {
           annotations+: {
             'prometheus.io/port': '9114',
-            'prometheus.io/scrape': 'true',
+            'prometheus.io/scrape': 'false',
           },
         },
         spec+: {
