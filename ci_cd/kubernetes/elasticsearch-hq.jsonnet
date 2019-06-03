@@ -1,10 +1,11 @@
 local ok = import 'kubernetes/outreach.libsonnet';
+local cluster = import 'kubernetes/cluster.libsonnet';
 
-local all(
-  name = 'elasticsearch-hq',
-  namespace = std.extVar('namespace'),
-  host = 'elastichq.outreach.cloud',
-) = {
+local all() = {
+  local name = 'elasticsearch-hq',
+  local namespace = 'elasticsearch',
+  local host = 'elastichq.outreach.cloud',
+
   deployment: ok.Deployment(name, namespace) {
     spec+: {
       replicas: 1,
@@ -116,4 +117,4 @@ local all(
   db_volume: ok.PersistentVolumeClaim(name, namespace) { storage:: '5Gi' },
 };
 
-ok.List() { items_+: all() }
+ok.List() { [if cluster.environment == 'ops' then 'items_']+: all() }

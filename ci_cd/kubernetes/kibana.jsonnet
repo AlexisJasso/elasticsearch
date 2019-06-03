@@ -1,8 +1,11 @@
 local ok = import 'kubernetes/outreach.libsonnet';
-local cluster = ok.cluster;
+local cluster = import 'kubernetes/cluster.libsonnet';
 local host = 'kibana.%s.%s.outreach.cloud' % [cluster.environment, cluster.region];
 
-local all(name, namespace) = {
+local all() = {
+  local name = 'kibana',
+  local namespace = 'elasticsearch',
+
   deployment: ok.Deployment(name, namespace) {
     spec+: {
       replicas: 3,
@@ -51,7 +54,7 @@ local all(name, namespace) = {
               env: [
                 { name: 'SERVER_NAME', value: host },
                 { name: 'ELASTICSEARCH_REQUESTTIMEOUT', value: '600000' },
-                { name: 'ELASTICSEARCH_URL', value: 'http://elasticsearch-logging:9200' },
+                { name: 'ELASTICSEARCH_URL', value: 'http://k8s-elasticsearch:9200' },
                 { name: 'MAP_INCLUDEELASTICMAPSSERVICE', value: 'false' },
               ],
               livenessProbe: {
@@ -123,4 +126,4 @@ local all(name, namespace) = {
   },
 };
 
-ok.List() { items_: all('kibana', 'monitoring'), }
+ok.List() { items_: all(), }

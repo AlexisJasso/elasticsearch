@@ -1,12 +1,15 @@
 local ok = import 'kubernetes/outreach.libsonnet';
+local cluster = import 'kubernetes/cluster.libsonnet';
 
 local all() = {
+  local namespace = 'elasticsearch',
+
   cronjob: {
     apiVersion: 'batch/v1beta1',
     kind: 'CronJob',
     metadata: {
       name: 'curator',
-      namespace: 'monitoring',
+      namespace: namespace,
     },
     spec: {
       concurrencyPolicy: 'Forbid',
@@ -23,7 +26,7 @@ local all() = {
                     "/var/curator/action/action_file.yaml",
                   ],
                   env: [
-                    { name: 'ELASTIC_HOST', value: 'elasticsearch-logging' },
+                    { name: 'ELASTIC_HOST', value: 'es-logging.%s.intor.io' % [cluster.global_name] },
                     { name: 'ELASTIC_PORT', value: '9200' },
                     { name: 'LOGLEVEL', value: 'INFO' },
                     { name: 'RETENTION_DAYS', value: '7' },
@@ -48,7 +51,7 @@ local all() = {
       schedule: '1 7 * * *',
     },
   },
-  config_file: ok.ConfigMap('curator-config', 'monitoring') {
+  config_file: ok.ConfigMap('curator-config', namespace) {
     data: {
       'config.yaml': |||
         client:
@@ -61,7 +64,7 @@ local all() = {
       |||,
     },
   },
-  action_file: ok.ConfigMap('curator-action', 'monitoring'){
+  action_file: ok.ConfigMap('curator-action', namespace){
     data: {
       'action_file.yaml': |||
         actions:
