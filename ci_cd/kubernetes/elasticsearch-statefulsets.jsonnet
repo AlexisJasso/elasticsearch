@@ -41,6 +41,10 @@ local all() = {
     },
   },
 
+  master_pdb: ok.PodDisruptionBudget('%s-%s' % [name, 'master'], namespace) {
+    spec+: { maxUnavailable: 1 },
+  },
+
   data_statefulset: elasticsearch(name, namespace, app = '%s-query' % name, role = 'data') {
     spec+: {
       template+: {
@@ -64,6 +68,10 @@ local all() = {
         },
       }],
     },
+  },
+
+  data_pdb: ok.PodDisruptionBudget('%s-%s' % [name, 'data'], namespace, app = '%s-query' % name) {
+    spec+: { maxUnavailable: 1 },
   },
 
   headless_service: ok.Service('%s-headless' % name, namespace) {
