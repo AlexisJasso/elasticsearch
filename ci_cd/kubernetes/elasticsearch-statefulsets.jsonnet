@@ -48,7 +48,6 @@ local all() = {
           containers_+:: {
             default+: {
               env_+:: {
-                'ES_JAVA_OPTS': '-Xms8g -Xmx8g',
                 'node.master': 'false',
                 'node.data': 'true',
               },
