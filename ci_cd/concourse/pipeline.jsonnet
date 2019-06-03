@@ -58,7 +58,6 @@ local elasticsearch_jobs = [
         },
         vault_secrets = [
           'deploy/monitoring/kibana/secrets',
-          'deploy/elasticsearch-hq/secrets',
         ],
         params = {
           validation_retries: "100",
