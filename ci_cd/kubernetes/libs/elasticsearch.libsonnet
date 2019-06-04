@@ -85,6 +85,7 @@ function(name, namespace, app = name, role = 'all')
                 'discovery.zen.minimum_master_nodes': '2',
                 'discovery.zen.ping.unicast.hosts': '%s.%s.intor.io' % [name, cluster.global_name],
                 'cluster.name': 'k8s-%s-%s' % [cluster.environment, cluster.region],
+                'node.name': ok.FieldRef('metadata.name'),
               },
             },
             exporter: ok.Container('exporter') {
