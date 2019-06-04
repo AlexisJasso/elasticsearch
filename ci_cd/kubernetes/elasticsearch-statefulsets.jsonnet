@@ -15,19 +15,11 @@ local all() = {
         spec+: {
           containers_+:: {
             default+: {
-              resources: {
-                limits: {
-                  memory: '20Gi',
-                },
-                requests: {
-                  cpu: '3',
-                },
-              },
+              resources+: es_config.master_node.resources,
               env_+:: {
-                'ES_JAVA_OPTS': '-Xms10g -Xmx10g',
                 'node.master': 'true',
                 'node.data': 'false',
-              },
+              } + es_config.master_node.env,
             },
           },
         },

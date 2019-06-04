@@ -3,6 +3,20 @@
 
 {
   'ops.us-west-2': {
+    master_node: {
+      replicas: 3,
+      resources: {
+        limits: {
+          memory: '64Gi',
+        },
+        requests: {
+          cpu: '16',
+        },
+      },
+      env: {
+        'ES_JAVA_OPTS': '-Xms32g -Xmx32g',
+      },
+    },
     data_node: {
       replicas: 12,
       resources: {
@@ -19,8 +33,22 @@
     },
   },
   'staging.us-west-2': {
+    master_node: {
+      replicas: 3,
+      resources: {
+        limits: {
+          memory: '32Gi',
+        },
+        requests: {
+          cpu: '8',
+        },
+      },
+      env: {
+        'ES_JAVA_OPTS': '-Xms16g -Xmx16g',
+      },
+    },
     data_node: {
-      replicas: 5,
+      replicas: 3,
       resources: {
         limits: {
           memory: '64Gi',
@@ -35,8 +63,22 @@
     },
   },
   'staging.us-east-2': {
+    master_node: {
+      replicas: 3,
+      resources: {
+        limits: {
+          memory: '32Gi',
+        },
+        requests: {
+          cpu: '8',
+        },
+      },
+      env: {
+        'ES_JAVA_OPTS': '-Xms16g -Xmx16g',
+      },
+    },
     data_node: {
-      replicas: 5,
+      replicas: 3,
       resources: {
         limits: {
           memory: '64Gi',
@@ -51,6 +93,20 @@
     },
   },
   'production.us-east-1': {
+    master_node: {
+      replicas: 3,
+      resources: {
+        limits: {
+          memory: '32Gi',
+        },
+        requests: {
+          cpu: '8',
+        },
+      },
+      env: {
+        'ES_JAVA_OPTS': '-Xms16g -Xmx16g',
+      },
+    },
     data_node: {
       replicas: 5,
       resources: {
@@ -67,8 +123,22 @@
     },
   },
   'production.us-west-2': {
+    master_node: {
+      replicas: 3,
+      resources: {
+        limits: {
+          memory: '64Gi',
+        },
+        requests: {
+          cpu: '16',
+        },
+      },
+      env: {
+        'ES_JAVA_OPTS': '-Xms32g -Xmx32g',
+      },
+    },
     data_node: {
-      replicas: 12,
+      replicas: 24,
       resources: {
         limits: {
           memory: '64Gi',
