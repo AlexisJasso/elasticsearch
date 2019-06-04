@@ -1,6 +1,8 @@
 local ok = import 'kubernetes/outreach.libsonnet';
 local cluster = import 'kubernetes/cluster.libsonnet';
+local es_clusters = import '../../es-clusters.libsonnet';
 local elasticsearch = import 'libs/elasticsearch.libsonnet';
+local es_config = es_clusters[cluster.global_name];
 
 local all() = {
   local name = 'k8s-elasticsearch',
@@ -15,14 +17,14 @@ local all() = {
             default+: {
               resources: {
                 limits: {
-                  memory: '10Gi',
+                  memory: '20Gi',
                 },
                 requests: {
                   cpu: '3',
                 },
               },
               env_+:: {
-                'ES_JAVA_OPTS': '-Xms8g -Xmx8g',
+                'ES_JAVA_OPTS': '-Xms10g -Xmx10g',
                 'node.master': 'true',
                 'node.data': 'false',
               },
@@ -47,14 +49,16 @@ local all() = {
 
   data_statefulset: elasticsearch(name, namespace, app = '%s-query' % name, role = 'data') {
     spec+: {
+      replicas: es_config.data_node.replicas,
       template+: {
         spec+: {
           containers_+:: {
             default+: {
+              resources+: es_config.data_node.resources,
               env_+:: {
                 'node.master': 'false',
                 'node.data': 'true',
-              },
+              } + es_config.data_node.env,
             },
           },
         },
