@@ -1,6 +1,8 @@
 local ok = import 'kubernetes/outreach.libsonnet';
 local cluster = import 'kubernetes/cluster.libsonnet';
+local es_clusters = import '../../es-clusters.libsonnet';
 local elasticsearch = import 'libs/elasticsearch.libsonnet';
+local es_config = es_clusters[cluster.global_name];
 
 local all() = {
   local name = 'k8s-elasticsearch',
@@ -13,19 +15,11 @@ local all() = {
         spec+: {
           containers_+:: {
             default+: {
-              resources: {
-                limits: {
-                  memory: '10Gi',
-                },
-                requests: {
-                  cpu: '3',
-                },
-              },
+              resources+: es_config.master_node.resources,
               env_+:: {
-                'ES_JAVA_OPTS': '-Xms8g -Xmx8g',
                 'node.master': 'true',
                 'node.data': 'false',
-              },
+              } + es_config.master_node.env,
             },
           },
         },
@@ -41,17 +35,22 @@ local all() = {
     },
   },
 
+  master_pdb: ok.PodDisruptionBudget('%s-%s' % [name, 'master'], namespace) {
+    spec+: { maxUnavailable: 1 },
+  },
+
   data_statefulset: elasticsearch(name, namespace, app = '%s-query' % name, role = 'data') {
     spec+: {
+      replicas: es_config.data_node.replicas,
       template+: {
         spec+: {
           containers_+:: {
             default+: {
+              resources+: es_config.data_node.resources,
               env_+:: {
-                'ES_JAVA_OPTS': '-Xms8g -Xmx8g',
                 'node.master': 'false',
                 'node.data': 'true',
-              },
+              } + es_config.data_node.env,
             },
           },
         },
@@ -65,6 +64,10 @@ local all() = {
         },
       }],
     },
+  },
+
+  data_pdb: ok.PodDisruptionBudget('%s-%s' % [name, 'data'], namespace, app = '%s-query' % name) {
+    spec+: { maxUnavailable: 1 },
   },
 
   headless_service: ok.Service('%s-headless' % name, namespace) {

@@ -2,11 +2,11 @@ local ok = import 'kubernetes/outreach.libsonnet';
 local cluster = import 'kubernetes/cluster.libsonnet';
 
 function(name, namespace, app = name, role = 'all')
-  ok.StatefulSet("%s-%s" % [name, role], namespace, app) {
+  ok.StatefulSet('%s-%s' % [name, role], namespace, app) {
     local headless_service = '%s-headless' % name,
 
     spec+: {
-      replicas: 5,
+      replicas: 3,
       serviceName: headless_service,
       template+: {
         metadata+: {
@@ -59,7 +59,7 @@ function(name, namespace, app = name, role = 'all')
               image: 'docker.elastic.co/elasticsearch/elasticsearch-oss:6.6.1',
               resources: {
                 limits: {
-                  memory: '34Gi',
+                  memory: '64Gi',
                 },
                 requests: {
                   cpu: '6',
@@ -73,7 +73,7 @@ function(name, namespace, app = name, role = 'all')
                 { name: 'data', mountPath: '/usr/share/elasticsearch/data', },
               ],
               env_+:: {
-                'ES_JAVA_OPTS': '-Xms30g -Xmx30g',
+                'ES_JAVA_OPTS': '-Xms32g -Xmx32g',
                 'NAMESPACE': namespace,
                 'network.tcp.keep_alive': 'true',
                 'network.host': '0.0.0.0',
@@ -85,6 +85,7 @@ function(name, namespace, app = name, role = 'all')
                 'discovery.zen.minimum_master_nodes': '2',
                 'discovery.zen.ping.unicast.hosts': '%s.%s.intor.io' % [name, cluster.global_name],
                 'cluster.name': 'k8s-%s-%s' % [cluster.environment, cluster.region],
+                'node.name': ok.FieldRef('metadata.name'),
               },
             },
             exporter: ok.Container('exporter') {
