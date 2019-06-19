@@ -87,6 +87,22 @@ local all() = {
           2:
             action: delete_indices
             description: >-
+              Delete old metricbeat indices
+            options:
+              ignore_empty_list: True
+            filters:
+            - filtertype: pattern
+              kind: prefix
+              value: metricbeat-
+            - filtertype: age
+              source: name
+              direction: older
+              timestring: '%Y.%m.%d'
+              unit: days
+              unit_count: ${RETENTION_DAYS:30}
+          3:
+            action: delete_indices
+            description: >-
               Delete future dated indices
             options:
               ignore_empty_list: True
@@ -101,7 +117,7 @@ local all() = {
               range_to: 10000
               timestring: '%Y.%m.%d'
               unit: days
-          3:
+          4:
             action: delete_indices
             description: >-
               Delete old contour indices
