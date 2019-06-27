@@ -15,6 +15,8 @@
       name: 'logging',
       service: 'es-logging',
       master: {
+        http_port: 9200,
+        transport_port: 9300,
         replicas: 3,
         resources: {
           limits: {
@@ -29,6 +31,8 @@
         },
       },
       data: {
+        http_port: 9200,
+        transport_port: 9300,
         replicas: 12,
         resources: {
           limits: {
@@ -62,6 +66,8 @@
       name: 'logging',
       service: 'es-logging',
       master: {
+        http_port: 9200,
+        transport_port: 9300,
         replicas: 3,
         resources: {
           limits: {
@@ -76,6 +82,8 @@
         },
       },
       data: {
+        http_port: 9200,
+        transport_port: 9300,
         replicas: 3,
         resources: {
           limits: {
@@ -109,6 +117,8 @@
       name: 'logging',
       service: 'es-logging',
       master: {
+        http_port: 9200,
+        transport_port: 9300,
         replicas: 3,
         resources: {
           limits: {
@@ -123,6 +133,8 @@
         },
       },
       data: {
+        http_port: 9200,
+        transport_port: 9300,
         replicas: 3,
         resources: {
           limits: {
@@ -156,6 +168,8 @@
       name: 'logging',
       service: 'es-logging',
       master: {
+        http_port: 9200,
+        transport_port: 9300,
         replicas: 3,
         resources: {
           limits: {
@@ -170,6 +184,8 @@
         },
       },
       data: {
+        http_port: 9200,
+        transport_port: 9300,
         replicas: 5,
         resources: {
           limits: {
@@ -203,6 +219,8 @@
       name: 'logging',
       service: 'es-logging',
       master: {
+        http_port: 9200,
+        transport_port: 9300,
         replicas: 3,
         resources: {
           limits: {
@@ -217,6 +235,8 @@
         },
       },
       data: {
+        http_port: 9200,
+        transport_port: 9300,
         replicas: 24,
         resources: {
           limits: {
@@ -250,6 +270,8 @@
       name: this.namespace,
       service: '%s-es' % this.namespace,
       master: {
+        http_port: 9201,
+        transport_port: 9301,
         replicas: 3,
         resources: {
           limits: {
@@ -264,6 +286,8 @@
         },
       },
       data: {
+        http_port: 9201,
+        transport_port: 9301,
         replicas: 6,
         resources: {
           limits: {
@@ -279,7 +303,7 @@
       },
     },
     kibana: {
-      name: '%s-kibana' % this.name,
+      name: '%s-kibana' % this.namespace,
     },
     passed: null,
   },

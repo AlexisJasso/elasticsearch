@@ -57,7 +57,7 @@ local all() = {
               env: [
                 { name: 'SERVER_NAME', value: host },
                 { name: 'ELASTICSEARCH_REQUESTTIMEOUT', value: '600000' },
-                { name: 'ELASTICSEARCH_URL', value: 'http://%s:9200' % es_cluster.name },
+                { name: 'ELASTICSEARCH_URL', value: 'http://%s:%s' % [es_cluster.name, es_cluster.elasticsearch.master.http_port] },
                 { name: 'MAP_INCLUDEELASTICMAPSSERVICE', value: 'false' },
               ],
               livenessProbe: {

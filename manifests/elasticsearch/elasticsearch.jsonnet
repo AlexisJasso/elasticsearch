@@ -11,7 +11,13 @@ local all() = {
   local discovery_host  = '%s.%s.intor.io' % [name, cluster.global_name],
   local xcluster_host   = '%s.%s.intor.io' % [es_cluster.elasticsearch.service, cluster.global_name],
 
-  master_statefulset: elasticsearch(name, namespace, role = 'master') {
+  master_statefulset: elasticsearch(
+    name            = name,
+    namespace       = namespace,
+    role            = 'master',
+    http_port       = es_cluster.elasticsearch.master.http_port,
+    transport_port  = es_cluster.elasticsearch.master.transport_port,
+  ) {
     spec+: {
       replicas: 3,
       template+: {
@@ -42,7 +48,14 @@ local all() = {
     spec+: { maxUnavailable: 1 },
   },
 
-  data_statefulset: elasticsearch(name, namespace, app = '%s-query' % name, role = 'data') {
+  data_statefulset: elasticsearch(
+    name            = name,
+    namespace       = namespace,
+    app             = '%s-query' % name,
+    role            = 'data',
+    http_port       = es_cluster.elasticsearch.data.http_port,
+    transport_port  = es_cluster.elasticsearch.data.transport_port,
+  ) {
     spec+: {
       replicas: es_cluster.elasticsearch.data.replicas,
       template+: {
@@ -77,8 +90,8 @@ local all() = {
     spec+: {
       clusterIP: 'None',
       ports:[
-        { port: 9200, protocol: 'TCP', targetPort: 'db', name: 'db' },
-        { port: 9300, protocol: 'TCP', targetPort: 'transport', name: 'transport' },
+        { port: es_cluster.elasticsearch.data.http_port, protocol: 'TCP', targetPort: 'db', name: 'db' },
+        { port: es_cluster.elasticsearch.data.transport_port, protocol: 'TCP', targetPort: 'transport', name: 'transport' },
       ],
       selector: { discovery: name },
     },

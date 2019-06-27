@@ -1,4 +1,4 @@
-#!/usr/bin/env bash	
+#!/usr/bin/env bash
 set -e
 
 export JSONNET=$(jsonnet ${DIR}/es-clusters.libsonnet)
