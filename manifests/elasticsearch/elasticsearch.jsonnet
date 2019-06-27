@@ -1,25 +1,34 @@
 local ok = import 'kubernetes/outreach.libsonnet';
 local cluster = import 'kubernetes/cluster.libsonnet';
+local utils = import '../libs/utils.libsonnet';
+local elasticsearch = import '../libs/elasticsearch.libsonnet';
 local es_clusters = import '../../es-clusters.libsonnet';
-local elasticsearch = import 'libs/elasticsearch.libsonnet';
-local es_config = es_clusters[cluster.global_name];
+local es_cluster = utils.GetCluster(std.extVar('es-cluster'), es_clusters);
 
 local all() = {
-  local name = 'k8s-elasticsearch',
-  local namespace = 'elasticsearch',
+  local name            = es_cluster.name,
+  local namespace       = es_cluster.namespace,
+  local discovery_host  = '%s.%s.intor.io' % [name, cluster.global_name],
+  local xcluster_host   = '%s.%s.intor.io' % [es_cluster.elasticsearch.service, cluster.global_name],
 
-  master_statefulset: elasticsearch(name, namespace, role = 'master') {
+  master_statefulset: elasticsearch(
+    name            = name,
+    namespace       = namespace,
+    role            = 'master',
+    http_port       = es_cluster.elasticsearch.master.http_port,
+    transport_port  = es_cluster.elasticsearch.master.transport_port,
+  ) {
     spec+: {
       replicas: 3,
       template+: {
         spec+: {
           containers_+:: {
             default+: {
-              resources+: es_config.master_node.resources,
+              resources+: es_cluster.elasticsearch.master.resources,
               env_+:: {
                 'node.master': 'true',
                 'node.data': 'false',
-              } + es_config.master_node.env,
+              } + es_cluster.elasticsearch.master.env,
             },
           },
         },
@@ -29,7 +38,7 @@ local all() = {
         spec+: {
           storageClassName: 'standard',
           accessModes: ['ReadWriteOnce'],
-          resources: { requests: { storage: '50Gi' } },
+          resources: { requests: { storage: es_cluster.elasticsearch.master.storage } },
         },
       }],
     },
@@ -39,18 +48,25 @@ local all() = {
     spec+: { maxUnavailable: 1 },
   },
 
-  data_statefulset: elasticsearch(name, namespace, app = '%s-query' % name, role = 'data') {
+  data_statefulset: elasticsearch(
+    name            = name,
+    namespace       = namespace,
+    app             = '%s-query' % name,
+    role            = 'data',
+    http_port       = es_cluster.elasticsearch.data.http_port,
+    transport_port  = es_cluster.elasticsearch.data.transport_port,
+  ) {
     spec+: {
-      replicas: es_config.data_node.replicas,
+      replicas: es_cluster.elasticsearch.data.replicas,
       template+: {
         spec+: {
           containers_+:: {
             default+: {
-              resources+: es_config.data_node.resources,
+              resources+: es_cluster.elasticsearch.data.resources,
               env_+:: {
                 'node.master': 'false',
                 'node.data': 'true',
-              } + es_config.data_node.env,
+              } + es_cluster.elasticsearch.data.env,
             },
           },
         },
@@ -60,7 +76,7 @@ local all() = {
         spec+: {
           storageClassName: 'standard',
           accessModes: ['ReadWriteOnce'],
-          resources: { requests: { storage: '250Gi' } },
+          resources: { requests: { storage: es_cluster.elasticsearch.data.storage } },
         },
       }],
     },
@@ -74,8 +90,8 @@ local all() = {
     spec+: {
       clusterIP: 'None',
       ports:[
-        { port: 9200, protocol: 'TCP', targetPort: 'db', name: 'db' },
-        { port: 9300, protocol: 'TCP', targetPort: 'transport', name: 'transport' },
+        { port: es_cluster.elasticsearch.data.http_port, protocol: 'TCP', targetPort: 'db', name: 'db' },
+        { port: es_cluster.elasticsearch.data.transport_port, protocol: 'TCP', targetPort: 'transport', name: 'transport' },
       ],
       selector: { discovery: name },
     },
@@ -85,7 +101,7 @@ local all() = {
     metadata+: {
       annotations+: {
         'service.beta.kubernetes.io/aws-load-balancer-internal': 'true',
-        'external-dns.alpha.kubernetes.io/hostname': '%s.%s.intor.io' % [name, cluster.global_name],
+        'external-dns.alpha.kubernetes.io/hostname': discovery_host,
       },
     },
     spec+: {
@@ -100,7 +116,7 @@ local all() = {
     metadata+: {
       annotations+: {
         'service.beta.kubernetes.io/aws-load-balancer-internal': 'true',
-        'external-dns.alpha.kubernetes.io/hostname': 'es-logging.%s.intor.io' % [cluster.global_name],
+        'external-dns.alpha.kubernetes.io/hostname': xcluster_host,
       },
     },
     spec+: {

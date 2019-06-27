@@ -1,7 +1,7 @@
 local ok = import 'kubernetes/outreach.libsonnet';
 local cluster = import 'kubernetes/cluster.libsonnet';
 
-function(name, namespace, app = name, role = 'all')
+function(name, namespace, app = name, role = 'all', http_port = 9200, transport_port = 9300)
   ok.StatefulSet('%s-%s' % [name, role], namespace, app) {
     local headless_service = '%s-headless' % name,
 
@@ -15,6 +15,7 @@ function(name, namespace, app = name, role = 'all')
             'prometheus.io/scrape': 'true',
           },
           labels+: {
+            service: 'elasticsearch',
             discovery: name,
           },
         },
@@ -26,6 +27,24 @@ function(name, namespace, app = name, role = 'all')
             runAsNonRoot: true,
           },
           affinity: {
+            podAntiAffinity: {
+              requiredDuringSchedulingIgnoredDuringExecution: [
+                {
+                  labelSelector: {
+                    matchExpressions: [
+                      {
+                        key: 'service',
+                        operator: 'In',
+                        values: [
+                          'elasticsearch',
+                        ],
+                      },
+                    ],
+                  },
+                  topologyKey: 'kubernetes.io/hostname',
+                },
+              ],
+            },
             nodeAffinity: {
               requiredDuringSchedulingIgnoredDuringExecution: {
                 nodeSelectorTerms: [{
@@ -66,13 +85,15 @@ function(name, namespace, app = name, role = 'all')
                 },
               },
               ports: [
-                { name: 'db', protocol: 'TCP', containerPort: 9200, },
-                { name: 'transport', protocol: 'TCP', containerPort: 9300, },
+                { name: 'db', protocol: 'TCP', containerPort: http_port, },
+                { name: 'transport', protocol: 'TCP', containerPort: transport_port, },
               ],
               volumeMounts: [
                 { name: 'data', mountPath: '/usr/share/elasticsearch/data', },
               ],
               env_+:: {
+                'http.port': '%s' % http_port,
+                'transport.tcp.port': '%s' % transport_port,
                 'ES_JAVA_OPTS': '-Xms32g -Xmx32g',
                 'NAMESPACE': namespace,
                 'network.tcp.keep_alive': 'true',
@@ -84,7 +105,7 @@ function(name, namespace, app = name, role = 'all')
                 'ingest-geoip.enabled': 'false',
                 'discovery.zen.minimum_master_nodes': '2',
                 'discovery.zen.ping.unicast.hosts': '%s.%s.intor.io' % [name, cluster.global_name],
-                'cluster.name': 'k8s-%s-%s' % [cluster.environment, cluster.region],
+                'cluster.name': '%s-%s-%s' % [name, cluster.environment, cluster.region],
                 'node.name': ok.FieldRef('metadata.name'),
               },
             },
@@ -92,7 +113,7 @@ function(name, namespace, app = name, role = 'all')
               image: 'justwatch/elasticsearch_exporter:1.0.2',
               command: [
                 '/bin/elasticsearch_exporter',
-                '-es.uri=http://localhost:9200',
+                '-es.uri=http://localhost:%s' % http_port,
                 '-web.listen-address=:9114',
               ],
               resources: {
