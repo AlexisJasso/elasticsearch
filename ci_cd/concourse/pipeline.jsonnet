@@ -1,59 +1,39 @@
 local c = import 'concourse/pipeline.libsonnet';
-
-local name = 'elasticsearch';
-local namespace = 'elasticsearch';
-local source_repo = 'getoutreach/elasticsearch';
-local slack = '#deployments';
-local clusters = [
-  {
-    name: 'ops.us-west-2',
-    passed: null
-  },
-  {
-    name: 'staging.us-east-2',
-    passed: ['ops.us-west-2'],
-  },
-  {
-    name: 'staging.us-west-2',
-    passed: ['staging.us-east-2'],
-  },
-  {
-    name: 'production.us-east-1',
-    passed: ['staging.us-west-2'],
-  },
-  {
-    name: 'production.us-west-2',
-    passed: ['production.us-east-1'],
-  },
-];
+local es_clusters = import '../../es-clusters.libsonnet';
 
 local pipeline = c.newPipeline(
-  name        = name,
+  name        = 'elasticsearch',
   source_repo = 'getoutreach/elasticsearch',
 );
 
 # Deploy elasticsearch manifests
-local elasticsearch_jobs = [
-  pipeline.newJob(cluster.name, 'Master Branch') {
+local name                = 'elasticsearch';
+local slack_channel       = '#deployments';
+local elasticsearch_jobs  = [
+  pipeline.newJob('%s-%s-to-%s' % [es.elasticsearch.name, name, es.cluster], '1. Elasticsearch') {
+    local es_name = '%s-%s' % [es.elasticsearch.name, name],
     serial: true,
     steps:: [
       {
         get: 'source',
         trigger: true,
-        [if std.type(cluster.passed) != "null" then "passed"]: cluster.passed,
+        [if std.type(es.passed) != "null" then "passed"]: es.passed,
       },
       pipeline.slackMessage(
-        channel = slack,
+        channel = slack_channel,
         type = 'notice',
-        title = ':airplane_departure: Elasticsearch deployment to %s is starting...' % [cluster.name],
+        title = ':airplane_departure: %s deployment to %s is starting...' % [es_name, es.cluster],
       ),
       pipeline.k8sDeploy(
         debug = true,
-        cluster_name = cluster.name,
-        namespace = namespace,
-        manifests = ['ci_cd/kubernetes/*.jsonnet'],
+        cluster_name = es.cluster,
+        namespace = es.namespace,
+        manifests = [
+          'manifests/elasticsearch/*.jsonnet',
+          'manifests/curator/*.jsonnet',
+          'manifests/kibana/*.jsonnet',
+        ],
         kubecfg_vars = {
-          namespace: namespace,
           ts: '$(date +%s)',
         },
         vault_secrets = [
@@ -67,20 +47,20 @@ local elasticsearch_jobs = [
     plan_: pipeline.steps(self.steps),
     on_success_: pipeline.do([
       pipeline.slackMessage(
-        channel = slack,
+        channel = slack_channel,
         type = 'success',
-        title = ':airplane_arriving: Elasticsearch deployment to %s succeeded! :successkid:' % [cluster.name],
+        title = ':airplane_arriving: %s deployment to %s succeeded! :successkid:' % [es_name, es.cluster],
       )
     ]),
     on_failure_: pipeline.do([
       pipeline.slackMessage(
-        channel = slack,
+        channel = slack_channel,
         type = 'failure',
-        title = ":boom: Elasticsearch deployment to %s failed..." % [cluster.name],
+        title = ":boom: %s deployment to %s failed..." % [es_name, es.cluster],
       )
     ]),
   }
-  for cluster in clusters
+  for es in es_clusters
 ];
 
 [

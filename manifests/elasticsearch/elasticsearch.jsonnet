@@ -1,12 +1,15 @@
 local ok = import 'kubernetes/outreach.libsonnet';
 local cluster = import 'kubernetes/cluster.libsonnet';
+local utils = import '../libs/utils.libsonnet';
+local elasticsearch = import '../libs/elasticsearch.libsonnet';
 local es_clusters = import '../../es-clusters.libsonnet';
-local elasticsearch = import 'libs/elasticsearch.libsonnet';
-local es_config = es_clusters[cluster.global_name];
+local es_cluster = utils.GetCluster(std.extVar('es-cluster'), es_clusters);
 
 local all() = {
-  local name = 'k8s-elasticsearch',
-  local namespace = 'elasticsearch',
+  local name            = es_cluster.name,
+  local namespace       = es_cluster.namespace,
+  local discovery_host  = '%s.%s.intor.io' % [name, cluster.global_name],
+  local xcluster_host   = '%s.%s.intor.io' % [es_cluster.elasticsearch.service, cluster.global_name],
 
   master_statefulset: elasticsearch(name, namespace, role = 'master') {
     spec+: {
@@ -15,11 +18,11 @@ local all() = {
         spec+: {
           containers_+:: {
             default+: {
-              resources+: es_config.master_node.resources,
+              resources+: es_cluster.elasticsearch.master.resources,
               env_+:: {
                 'node.master': 'true',
                 'node.data': 'false',
-              } + es_config.master_node.env,
+              } + es_cluster.elasticsearch.master.env,
             },
           },
         },
@@ -41,16 +44,16 @@ local all() = {
 
   data_statefulset: elasticsearch(name, namespace, app = '%s-query' % name, role = 'data') {
     spec+: {
-      replicas: es_config.data_node.replicas,
+      replicas: es_cluster.elasticsearch.data.replicas,
       template+: {
         spec+: {
           containers_+:: {
             default+: {
-              resources+: es_config.data_node.resources,
+              resources+: es_cluster.elasticsearch.data.resources,
               env_+:: {
                 'node.master': 'false',
                 'node.data': 'true',
-              } + es_config.data_node.env,
+              } + es_cluster.elasticsearch.data.env,
             },
           },
         },
@@ -85,7 +88,7 @@ local all() = {
     metadata+: {
       annotations+: {
         'service.beta.kubernetes.io/aws-load-balancer-internal': 'true',
-        'external-dns.alpha.kubernetes.io/hostname': '%s.%s.intor.io' % [name, cluster.global_name],
+        'external-dns.alpha.kubernetes.io/hostname': discovery_host,
       },
     },
     spec+: {
@@ -100,7 +103,7 @@ local all() = {
     metadata+: {
       annotations+: {
         'service.beta.kubernetes.io/aws-load-balancer-internal': 'true',
-        'external-dns.alpha.kubernetes.io/hostname': 'es-logging.%s.intor.io' % [cluster.global_name],
+        'external-dns.alpha.kubernetes.io/hostname': xcluster_host,
       },
     },
     spec+: {

@@ -1,10 +1,13 @@
 local ok = import 'kubernetes/outreach.libsonnet';
 local cluster = import 'kubernetes/cluster.libsonnet';
-local host = 'kibana.%s.%s.outreach.cloud' % [cluster.environment, cluster.region];
+local utils = import '../libs/utils.libsonnet';
+local es_clusters = import '../../es-clusters.libsonnet';
+local es_cluster = utils.GetCluster(std.extVar('es-cluster'), es_clusters);
 
 local all() = {
-  local name = 'kibana',
-  local namespace = 'elasticsearch',
+  local name      = es_cluster.kibana.name,
+  local namespace = es_cluster.namespace,
+  local host      = '%s.%s.%s.outreach.cloud' % [name, cluster.environment, cluster.region],
 
   deployment: ok.Deployment(name, namespace) {
     spec+: {
@@ -54,7 +57,7 @@ local all() = {
               env: [
                 { name: 'SERVER_NAME', value: host },
                 { name: 'ELASTICSEARCH_REQUESTTIMEOUT', value: '600000' },
-                { name: 'ELASTICSEARCH_URL', value: 'http://k8s-elasticsearch:9200' },
+                { name: 'ELASTICSEARCH_URL', value: 'http://%s:9200' % es_cluster.name },
                 { name: 'MAP_INCLUDEELASTICMAPSSERVICE', value: 'false' },
               ],
               livenessProbe: {
@@ -90,15 +93,17 @@ local all() = {
       },
     },
   },
+
   service: ok.Service(name, namespace) {
     metadata+: { namespace: namespace },
     target_pod: $.deployment.spec.template,
     port: 8080,
   },
+
   ingress: ok.ContourIngress(
     name,
     namespace,
-    tlsSecret = 'kibana-%s-tls' % [namespace],
+    tlsSecret = '%s-%s-tls' % [name, namespace],
   ) {
     host:: host,
     metadata+: {
@@ -114,7 +119,7 @@ local all() = {
             paths: [
               {
                 backend: {
-                  serviceName: 'kibana',
+                  serviceName: name,
                   servicePort: 8080,
                 },
               },

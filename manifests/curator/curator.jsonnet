@@ -1,22 +1,21 @@
 local ok = import 'kubernetes/outreach.libsonnet';
 local cluster = import 'kubernetes/cluster.libsonnet';
+local utils = import '../libs/utils.libsonnet';
+local es_clusters = import '../../es-clusters.libsonnet';
+local es_cluster = utils.GetCluster(std.extVar('es-cluster'), es_clusters);
 
 local all() = {
-  local namespace = 'elasticsearch',
+  local name          = es_cluster.curator.name,
+  local namespace     = es_cluster.namespace,
+  local xcluster_host = '%s.%s.intor.io' % [es_cluster.elasticsearch.service, cluster.global_name],
 
-  cronjob: {
-    apiVersion: 'batch/v1beta1',
-    kind: 'CronJob',
-    metadata: {
-      name: 'curator',
-      namespace: namespace,
-    },
-    spec: {
+  cronjob: ok.CronJob(name, namespace) {
+    spec+: {
       concurrencyPolicy: 'Forbid',
-      jobTemplate: {
-        spec: {
-          template: {
-            spec: {
+      jobTemplate+: {
+        spec+: {
+          template+: {
+            spec+: {
               containers: [
                 {
                   command: [
@@ -26,7 +25,7 @@ local all() = {
                     "/var/curator/action/action_file.yaml",
                   ],
                   env: [
-                    { name: 'ELASTIC_HOST', value: 'es-logging.%s.intor.io' % [cluster.global_name] },
+                    { name: 'ELASTIC_HOST', value: xcluster_host },
                     { name: 'ELASTIC_PORT', value: '9200' },
                     { name: 'LOGLEVEL', value: 'INFO' },
                     { name: 'RETENTION_DAYS', value: '7' },
@@ -34,14 +33,14 @@ local all() = {
                   image: 'registry.outreach.cloud/curator:0.9.0',
                   name: 'curator',
                   volumeMounts: [
-                    { name: 'curator-config', mountPath: '/var/curator/config' },
-                    { name: 'curator-action', mountPath: '/var/curator/action' },
+                    { name: '%s-config' % name, mountPath: '/var/curator/config' },
+                    { name: '%s-action' % name, mountPath: '/var/curator/action' },
                   ],
                 },
               ],
               volumes: [
-                { name: 'curator-config', configMap: { name: 'curator-config' } },
-                { name: 'curator-action', configMap: { name: 'curator-action' } },
+                { name: '%s-config' % name, configMap: { name: '%s-config' % name } },
+                { name: '%s-action' % name, configMap: { name: '%s-action' % name } },
               ],
               restartPolicy: 'OnFailure',
             },
@@ -51,7 +50,8 @@ local all() = {
       schedule: '1 7 * * *',
     },
   },
-  config_file: ok.ConfigMap('curator-config', namespace) {
+
+  config_file: ok.ConfigMap('%s-config' % name, namespace) {
     data: {
       'config.yaml': |||
         client:
@@ -64,7 +64,8 @@ local all() = {
       |||,
     },
   },
-  action_file: ok.ConfigMap('curator-action', namespace){
+
+  action_file: ok.ConfigMap('%s-action' % name, namespace){
     data: {
       'action_file.yaml': |||
         actions:
