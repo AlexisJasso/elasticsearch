@@ -26,6 +26,7 @@
             cpu: '16',
           },
         },
+        storage: '50Gi',
         env: {
           'ES_JAVA_OPTS': '-Xms32g -Xmx32g',
         },
@@ -42,6 +43,7 @@
             cpu: '16',
           },
         },
+        storage: '250Gi',
         env: {
           'ES_JAVA_OPTS': '-Xms32g -Xmx32g',
         },
@@ -77,6 +79,7 @@
             cpu: '8',
           },
         },
+        storage: '50Gi',
         env: {
           'ES_JAVA_OPTS': '-Xms16g -Xmx16g',
         },
@@ -93,6 +96,7 @@
             cpu: '16',
           },
         },
+        storage: '250Gi',
         env: {
           'ES_JAVA_OPTS': '-Xms32g -Xmx32g',
         },
@@ -128,6 +132,7 @@
             cpu: '8',
           },
         },
+        storage: '50Gi',
         env: {
           'ES_JAVA_OPTS': '-Xms16g -Xmx16g',
         },
@@ -144,6 +149,7 @@
             cpu: '16',
           },
         },
+        storage: '250Gi',
         env: {
           'ES_JAVA_OPTS': '-Xms32g -Xmx32g',
         },
@@ -179,6 +185,7 @@
             cpu: '8',
           },
         },
+        storage: '50Gi',
         env: {
           'ES_JAVA_OPTS': '-Xms16g -Xmx16g',
         },
@@ -195,6 +202,7 @@
             cpu: '16',
           },
         },
+        storage: '250Gi',
         env: {
           'ES_JAVA_OPTS': '-Xms32g -Xmx32g',
         },
@@ -230,6 +238,7 @@
             cpu: '16',
           },
         },
+        storage: '50Gi',
         env: {
           'ES_JAVA_OPTS': '-Xms32g -Xmx32g',
         },
@@ -246,6 +255,7 @@
             cpu: '16',
           },
         },
+        storage: '250Gi',
         env: {
           'ES_JAVA_OPTS': '-Xms32g -Xmx32g',
         },
@@ -281,6 +291,7 @@
             cpu: '16',
           },
         },
+        storage: '50Gi',
         env: {
           'ES_JAVA_OPTS': '-Xms32g -Xmx32g',
         },
@@ -288,7 +299,7 @@
       data: {
         http_port: 9201,
         transport_port: 9301,
-        replicas: 6,
+        replicas: 12,
         resources: {
           limits: {
             memory: '64Gi',
@@ -297,6 +308,7 @@
             cpu: '16',
           },
         },
+        storage: '500Gi',
         env: {
           'ES_JAVA_OPTS': '-Xms32g -Xmx32g',
         },

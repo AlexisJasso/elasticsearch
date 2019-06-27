@@ -38,7 +38,7 @@ local all() = {
         spec+: {
           storageClassName: 'standard',
           accessModes: ['ReadWriteOnce'],
-          resources: { requests: { storage: '50Gi' } },
+          resources: { requests: { storage: es_cluster.elasticsearch.master.storage } },
         },
       }],
     },
@@ -76,7 +76,7 @@ local all() = {
         spec+: {
           storageClassName: 'standard',
           accessModes: ['ReadWriteOnce'],
-          resources: { requests: { storage: '250Gi' } },
+          resources: { requests: { storage: es_cluster.elasticsearch.data.storage } },
         },
       }],
     },
