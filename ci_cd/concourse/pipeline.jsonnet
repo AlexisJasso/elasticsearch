@@ -35,6 +35,7 @@ local elasticsearch_jobs  = [
         ],
         kubecfg_vars = {
           ts: '$(date +%s)',
+          'es-cluster': es.name,
         },
         vault_secrets = [
           'deploy/monitoring/kibana/secrets',
