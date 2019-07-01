@@ -423,7 +423,7 @@
     kibana: {
       name: '%s-kibana' % this.namespace,
     },
-    passed: null,
+    passed: ['%s-elasticsearch-to-ops.us-west-2' % this.elasticsearch.name],
   },
 
   // staging.us-east-2 envoy cluster
@@ -476,7 +476,7 @@
     kibana: {
       name: '%s-kibana' % this.namespace,
     },
-    passed: null,
+    passed: ['%s-elasticsearch-to-staging.us-west-2' % this.elasticsearch.name],
   },
 
   // production.us-west-2 Envoy
@@ -529,7 +529,7 @@
     kibana: {
       name: '%s-kibana' % this.namespace,
     },
-    passed: null,
+    passed: ['%s-elasticsearch-to-staging.us-east-2' % this.elasticsearch.name],
   },
 
   // production.us-east-1 Envoy
@@ -582,6 +582,6 @@
     kibana: {
       name: '%s-kibana' % this.namespace,
     },
-    passed: null,
+    passed: ['%s-elasticsearch-to-production.us-west-2' % this.elasticsearch.name],
   },
 ]
