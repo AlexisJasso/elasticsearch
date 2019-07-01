@@ -134,6 +134,22 @@ local all() = {
               timestring: '%Y.%m.%d'
               unit: days
               unit_count: 1
+          5:
+            action: delete_indices
+            description: >-
+              Delete old jaeger span indices
+            options:
+              ignore_empty_list: True
+            filters:
+            - filtertype: pattern
+              kind: prefix
+              value: jaeger-span
+            - filtertype: age
+              source: name
+              direction: older
+              timestring: '%Y.%m.%d'
+              unit: days
+              unit_count: 3
       |||,
     },
   },
