@@ -319,4 +319,269 @@
     },
     passed: null,
   },
+
+  // Ops envoy cluster
+  {
+    local this = self,
+    name: 'contour-elasticsearch',
+    namespace: 'contour',
+    cluster: 'ops.us-west-2',
+    curator: {
+      name: '%s-curator' % this.name,
+    },
+    elasticsearch: {
+      name: this.namespace,
+      service: '%s-es' % this.namespace,
+      master: {
+        http_port: 9202,
+        transport_port: 9302,
+        replicas: 3,
+        resources: {
+          limits: {
+            memory: '64Gi',
+          },
+          requests: {
+            cpu: '16',
+          },
+        },
+        storage: '50Gi',
+        env: {
+          'ES_JAVA_OPTS': '-Xms32g -Xmx32g',
+        },
+      },
+      data: {
+        http_port: 9202,
+        transport_port: 9302,
+        replicas: 5,
+        resources: {
+          limits: {
+            memory: '64Gi',
+          },
+          requests: {
+            cpu: '16',
+          },
+        },
+        storage: '250Gi',
+        env: {
+          'ES_JAVA_OPTS': '-Xms32g -Xmx32g',
+        },
+      },
+    },
+    kibana: {
+      name: '%s-kibana' % this.namespace,
+    },
+    passed: null,
+  },
+
+  // staging.us-west-2 envoy cluster
+  {
+    local this = self,
+    name: 'contour-elasticsearch',
+    namespace: 'contour',
+    cluster: 'staging.us-west-2',
+    curator: {
+      name: '%s-curator' % this.name,
+    },
+    elasticsearch: {
+      name: this.namespace,
+      service: '%s-es' % this.namespace,
+      master: {
+        http_port: 9202,
+        transport_port: 9302,
+        replicas: 3,
+        resources: {
+          limits: {
+            memory: '64Gi',
+          },
+          requests: {
+            cpu: '16',
+          },
+        },
+        storage: '50Gi',
+        env: {
+          'ES_JAVA_OPTS': '-Xms32g -Xmx32g',
+        },
+      },
+      data: {
+        http_port: 9202,
+        transport_port: 9302,
+        replicas: 5,
+        resources: {
+          limits: {
+            memory: '64Gi',
+          },
+          requests: {
+            cpu: '16',
+          },
+        },
+        storage: '250Gi',
+        env: {
+          'ES_JAVA_OPTS': '-Xms32g -Xmx32g',
+        },
+      },
+    },
+    kibana: {
+      name: '%s-kibana' % this.namespace,
+    },
+    passed: null,
+  },
+
+  // staging.us-east-2 envoy cluster
+  {
+    local this = self,
+    name: 'contour-elasticsearch',
+    namespace: 'contour',
+    cluster: 'staging.us-east-2',
+    curator: {
+      name: '%s-curator' % this.name,
+    },
+    elasticsearch: {
+      name: this.namespace,
+      service: '%s-es' % this.namespace,
+      master: {
+        http_port: 9202,
+        transport_port: 9302,
+        replicas: 3,
+        resources: {
+          limits: {
+            memory: '64Gi',
+          },
+          requests: {
+            cpu: '16',
+          },
+        },
+        storage: '50Gi',
+        env: {
+          'ES_JAVA_OPTS': '-Xms32g -Xmx32g',
+        },
+      },
+      data: {
+        http_port: 9202,
+        transport_port: 9302,
+        replicas: 5,
+        resources: {
+          limits: {
+            memory: '64Gi',
+          },
+          requests: {
+            cpu: '16',
+          },
+        },
+        storage: '250Gi',
+        env: {
+          'ES_JAVA_OPTS': '-Xms32g -Xmx32g',
+        },
+      },
+    },
+    kibana: {
+      name: '%s-kibana' % this.namespace,
+    },
+    passed: null,
+  },
+
+  // production.us-west-2 Envoy
+  {
+    local this = self,
+    name: 'contour-elasticsearch',
+    namespace: 'contour',
+    cluster: 'production.us-west-2',
+    curator: {
+      name: '%s-curator' % this.name,
+    },
+    elasticsearch: {
+      name: this.namespace,
+      service: '%s-es' % this.namespace,
+      master: {
+        http_port: 9202,
+        transport_port: 9302,
+        replicas: 3,
+        resources: {
+          limits: {
+            memory: '64Gi',
+          },
+          requests: {
+            cpu: '16',
+          },
+        },
+        storage: '50Gi',
+        env: {
+          'ES_JAVA_OPTS': '-Xms32g -Xmx32g',
+        },
+      },
+      data: {
+        http_port: 9202,
+        transport_port: 9302,
+        replicas: 5,
+        resources: {
+          limits: {
+            memory: '64Gi',
+          },
+          requests: {
+            cpu: '16',
+          },
+        },
+        storage: '500Gi',
+        env: {
+          'ES_JAVA_OPTS': '-Xms32g -Xmx32g',
+        },
+      },
+    },
+    kibana: {
+      name: '%s-kibana' % this.namespace,
+    },
+    passed: null,
+  },
+
+  // production.us-east-1 Envoy
+  {
+    local this = self,
+    name: 'contour-elasticsearch',
+    namespace: 'contour',
+    cluster: 'production.us-east-1',
+    curator: {
+      name: '%s-curator' % this.name,
+    },
+    elasticsearch: {
+      name: this.namespace,
+      service: '%s-es' % this.namespace,
+      master: {
+        http_port: 9202,
+        transport_port: 9302,
+        replicas: 3,
+        resources: {
+          limits: {
+            memory: '64Gi',
+          },
+          requests: {
+            cpu: '16',
+          },
+        },
+        storage: '50Gi',
+        env: {
+          'ES_JAVA_OPTS': '-Xms32g -Xmx32g',
+        },
+      },
+      data: {
+        http_port: 9202,
+        transport_port: 9302,
+        replicas: 5,
+        resources: {
+          limits: {
+            memory: '64Gi',
+          },
+          requests: {
+            cpu: '16',
+          },
+        },
+        storage: '500Gi',
+        env: {
+          'ES_JAVA_OPTS': '-Xms32g -Xmx32g',
+        },
+      },
+    },
+    kibana: {
+      name: '%s-kibana' % this.namespace,
+    },
+    passed: null,
+  },
 ]
