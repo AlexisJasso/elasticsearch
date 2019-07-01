@@ -149,7 +149,7 @@ local all() = {
               direction: older
               timestring: '%Y.%m.%d'
               unit: days
-              unit_count: 2
+              unit_count: 3
       |||,
     },
   },
