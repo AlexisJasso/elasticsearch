@@ -20,15 +20,15 @@
         replicas: 3,
         resources: {
           limits: {
-            memory: '64Gi',
+            memory: '16Gi',
           },
           requests: {
-            cpu: '16',
+            cpu: '2',
           },
         },
         storage: '50Gi',
         env: {
-          'ES_JAVA_OPTS': '-Xms32g -Xmx32g',
+          'ES_JAVA_OPTS': '-Xms8g -Xmx8g',
         },
       },
       data: {
@@ -37,15 +37,15 @@
         replicas: 12,
         resources: {
           limits: {
-            memory: '64Gi',
+            memory: '16Gi',
           },
           requests: {
-            cpu: '16',
+            cpu: '2',
           },
         },
-        storage: '250Gi',
+        storage: '150Gi',
         env: {
-          'ES_JAVA_OPTS': '-Xms32g -Xmx32g',
+          'ES_JAVA_OPTS': '-Xms8g -Xmx8g',
         },
       },
     },
@@ -73,15 +73,15 @@
         replicas: 3,
         resources: {
           limits: {
-            memory: '32Gi',
+            memory: '16Gi',
           },
           requests: {
-            cpu: '8',
+            cpu: '2',
           },
         },
         storage: '50Gi',
         env: {
-          'ES_JAVA_OPTS': '-Xms16g -Xmx16g',
+          'ES_JAVA_OPTS': '-Xms8g -Xmx8g',
         },
       },
       data: {
@@ -90,15 +90,15 @@
         replicas: 3,
         resources: {
           limits: {
-            memory: '64Gi',
+            memory: '16Gi',
           },
           requests: {
-            cpu: '16',
+            cpu: '2',
           },
         },
-        storage: '250Gi',
+        storage: '150Gi',
         env: {
-          'ES_JAVA_OPTS': '-Xms32g -Xmx32g',
+          'ES_JAVA_OPTS': '-Xms8g -Xmx8g',
         },
       },
     },
@@ -126,15 +126,15 @@
         replicas: 3,
         resources: {
           limits: {
-            memory: '32Gi',
+            memory: '16Gi',
           },
           requests: {
-            cpu: '8',
+            cpu: '2',
           },
         },
         storage: '50Gi',
         env: {
-          'ES_JAVA_OPTS': '-Xms16g -Xmx16g',
+          'ES_JAVA_OPTS': '-Xms8g -Xmx8g',
         },
       },
       data: {
@@ -143,15 +143,15 @@
         replicas: 3,
         resources: {
           limits: {
-            memory: '64Gi',
+            memory: '16Gi',
           },
           requests: {
-            cpu: '16',
+            cpu: '2',
           },
         },
-        storage: '250Gi',
+        storage: '150Gi',
         env: {
-          'ES_JAVA_OPTS': '-Xms32g -Xmx32g',
+          'ES_JAVA_OPTS': '-Xms8g -Xmx8g',
         },
       },
     },
@@ -179,15 +179,15 @@
         replicas: 3,
         resources: {
           limits: {
-            memory: '32Gi',
+            memory: '16Gi',
           },
           requests: {
-            cpu: '8',
+            cpu: '2',
           },
         },
         storage: '50Gi',
         env: {
-          'ES_JAVA_OPTS': '-Xms16g -Xmx16g',
+          'ES_JAVA_OPTS': '-Xms8g -Xmx8g',
         },
       },
       data: {
@@ -196,15 +196,15 @@
         replicas: 5,
         resources: {
           limits: {
-            memory: '64Gi',
+            memory: '16Gi',
           },
           requests: {
-            cpu: '16',
+            cpu: '2',
           },
         },
-        storage: '250Gi',
+        storage: '150Gi',
         env: {
-          'ES_JAVA_OPTS': '-Xms32g -Xmx32g',
+          'ES_JAVA_OPTS': '-Xms8g -Xmx8g',
         },
       },
     },
@@ -232,15 +232,15 @@
         replicas: 3,
         resources: {
           limits: {
-            memory: '64Gi',
+            memory: '16Gi',
           },
           requests: {
-            cpu: '16',
+            cpu: '2',
           },
         },
         storage: '50Gi',
         env: {
-          'ES_JAVA_OPTS': '-Xms32g -Xmx32g',
+          'ES_JAVA_OPTS': '-Xms8g -Xmx8g',
         },
       },
       data: {
@@ -249,15 +249,15 @@
         replicas: 24,
         resources: {
           limits: {
-            memory: '64Gi',
+            memory: '16Gi',
           },
           requests: {
-            cpu: '16',
+            cpu: '2',
           },
         },
         storage: '250Gi',
         env: {
-          'ES_JAVA_OPTS': '-Xms32g -Xmx32g',
+          'ES_JAVA_OPTS': '-Xms8g -Xmx8g',
         },
       },
     },
@@ -338,15 +338,15 @@
         replicas: 3,
         resources: {
           limits: {
-            memory: '64Gi',
+            memory: '16Gi',
           },
           requests: {
-            cpu: '16',
+            cpu: '2',
           },
         },
         storage: '50Gi',
         env: {
-          'ES_JAVA_OPTS': '-Xms32g -Xmx32g',
+          'ES_JAVA_OPTS': '-Xms8g -Xmx8g',
         },
       },
       data: {
@@ -355,15 +355,15 @@
         replicas: 5,
         resources: {
           limits: {
-            memory: '64Gi',
+            memory: '32Gi',
           },
           requests: {
-            cpu: '16',
+            cpu: '4',
           },
         },
         storage: '250Gi',
         env: {
-          'ES_JAVA_OPTS': '-Xms32g -Xmx32g',
+          'ES_JAVA_OPTS': '-Xms16g -Xmx16g',
         },
       },
     },
@@ -391,15 +391,15 @@
         replicas: 3,
         resources: {
           limits: {
-            memory: '64Gi',
+            memory: '16Gi',
           },
           requests: {
-            cpu: '16',
+            cpu: '2',
           },
         },
         storage: '50Gi',
         env: {
-          'ES_JAVA_OPTS': '-Xms32g -Xmx32g',
+          'ES_JAVA_OPTS': '-Xms8g -Xmx8g',
         },
       },
       data: {
@@ -408,15 +408,15 @@
         replicas: 5,
         resources: {
           limits: {
-            memory: '64Gi',
+            memory: '32Gi',
           },
           requests: {
-            cpu: '16',
+            cpu: '4',
           },
         },
         storage: '250Gi',
         env: {
-          'ES_JAVA_OPTS': '-Xms32g -Xmx32g',
+          'ES_JAVA_OPTS': '-Xms16g -Xmx16g',
         },
       },
     },
@@ -444,15 +444,15 @@
         replicas: 3,
         resources: {
           limits: {
-            memory: '64Gi',
+            memory: '16Gi',
           },
           requests: {
-            cpu: '16',
+            cpu: '2',
           },
         },
         storage: '50Gi',
         env: {
-          'ES_JAVA_OPTS': '-Xms32g -Xmx32g',
+          'ES_JAVA_OPTS': '-Xms8g -Xmx8g',
         },
       },
       data: {
@@ -461,15 +461,15 @@
         replicas: 5,
         resources: {
           limits: {
-            memory: '64Gi',
+            memory: '32Gi',
           },
           requests: {
-            cpu: '16',
+            cpu: '4',
           },
         },
         storage: '250Gi',
         env: {
-          'ES_JAVA_OPTS': '-Xms32g -Xmx32g',
+          'ES_JAVA_OPTS': '-Xms16g -Xmx16g',
         },
       },
     },
@@ -497,15 +497,15 @@
         replicas: 3,
         resources: {
           limits: {
-            memory: '64Gi',
+            memory: '16Gi',
           },
           requests: {
-            cpu: '16',
+            cpu: '2',
           },
         },
         storage: '50Gi',
         env: {
-          'ES_JAVA_OPTS': '-Xms32g -Xmx32g',
+          'ES_JAVA_OPTS': '-Xms8g -Xmx8g',
         },
       },
       data: {
@@ -514,15 +514,15 @@
         replicas: 5,
         resources: {
           limits: {
-            memory: '64Gi',
+            memory: '32Gi',
           },
           requests: {
-            cpu: '16',
+            cpu: '4',
           },
         },
         storage: '500Gi',
         env: {
-          'ES_JAVA_OPTS': '-Xms32g -Xmx32g',
+          'ES_JAVA_OPTS': '-Xms16g -Xmx16g',
         },
       },
     },
@@ -550,15 +550,15 @@
         replicas: 3,
         resources: {
           limits: {
-            memory: '64Gi',
+            memory: '16Gi',
           },
           requests: {
-            cpu: '16',
+            cpu: '2',
           },
         },
         storage: '50Gi',
         env: {
-          'ES_JAVA_OPTS': '-Xms32g -Xmx32g',
+          'ES_JAVA_OPTS': '-Xms8g -Xmx8g',
         },
       },
       data: {
@@ -567,15 +567,15 @@
         replicas: 5,
         resources: {
           limits: {
-            memory: '64Gi',
+            memory: '32Gi',
           },
           requests: {
-            cpu: '16',
+            cpu: '4',
           },
         },
         storage: '500Gi',
         env: {
-          'ES_JAVA_OPTS': '-Xms32g -Xmx32g',
+          'ES_JAVA_OPTS': '-Xms16g -Xmx16g',
         },
       },
     },
