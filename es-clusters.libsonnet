@@ -246,7 +246,7 @@
       data: {
         http_port: 9200,
         transport_port: 9300,
-        replicas: 24,
+        replicas: 5,
         resources: {
           limits: {
             memory: '16Gi',
