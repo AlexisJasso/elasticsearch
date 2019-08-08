@@ -285,15 +285,15 @@
         replicas: 3,
         resources: {
           limits: {
-            memory: '64Gi',
+            memory: '16Gi',
           },
           requests: {
-            cpu: '16',
+            cpu: '2',
           },
         },
         storage: '50Gi',
         env: {
-          'ES_JAVA_OPTS': '-Xms32g -Xmx32g',
+          'ES_JAVA_OPTS': '-Xms8g -Xmx8g',
         },
       },
       data: {
@@ -302,15 +302,15 @@
         replicas: 12,
         resources: {
           limits: {
-            memory: '64Gi',
+            memory: '16Gi',
           },
           requests: {
-            cpu: '16',
+            cpu: '2',
           },
         },
         storage: '500Gi',
         env: {
-          'ES_JAVA_OPTS': '-Xms32g -Xmx32g',
+          'ES_JAVA_OPTS': '-Xms8g -Xmx8g',
         },
       },
     },
