@@ -53,7 +53,7 @@ local all() = {
               },
             },
             ok.Container(name){
-              image: 'docker.elastic.co/kibana/kibana-oss:6.6.1',
+              image: 'docker.elastic.co/kibana/kibana-oss:6.8.2',
               env: [
                 { name: 'SERVER_NAME', value: host },
                 { name: 'ELASTICSEARCH_REQUESTTIMEOUT', value: '600000' },

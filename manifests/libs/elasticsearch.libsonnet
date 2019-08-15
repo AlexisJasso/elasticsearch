@@ -75,7 +75,7 @@ function(name, namespace, app = name, role = 'all', http_port = 9200, transport_
           }],
           containers_:: {
             default: ok.Container('es') {
-              image: 'docker.elastic.co/elasticsearch/elasticsearch-oss:6.6.1',
+              image: 'docker.elastic.co/elasticsearch/elasticsearch-oss:6.8.2',
               resources: {
                 limits: {
                   memory: '64Gi',
