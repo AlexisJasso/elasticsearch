@@ -46,9 +46,9 @@ function(name, namespace, app = name, role = 'all', http_port = 9200, transport_
               ],
             },
             nodeAffinity: {
-              preferredDuringSchedulingIgnoredDuringExecution: {
+              preferredDuringSchedulingIgnoredDuringExecution: [{
                 weight: 100,
-                nodeSelectorTerms: [{
+                preference: {
                   local nodepools = [
                     'monitoring',
                     'monitoring-large',
@@ -64,8 +64,8 @@ function(name, namespace, app = name, role = 'all', http_port = 9200, transport_
                     operator: 'In',
                     values: nodepools,
                   }],
-                }],
-              },
+                },
+              }],
             },
           },
           tolerations: [{
