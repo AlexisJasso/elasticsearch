@@ -94,6 +94,7 @@ function(name, namespace, app = name, role = 'all', http_port = 9200, transport_
               ],
               env_+:: {
                 'http.port': '%s' % http_port,
+                'transport.port': '%s' % transport_port,
                 'ES_JAVA_OPTS': '-Xms32g -Xmx32g',
                 'NAMESPACE': namespace,
                 'network.tcp.keep_alive': 'true',
