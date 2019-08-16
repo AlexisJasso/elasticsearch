@@ -46,7 +46,8 @@ function(name, namespace, app = name, role = 'all', http_port = 9200, transport_
               ],
             },
             nodeAffinity: {
-              requiredDuringSchedulingIgnoredDuringExecution: {
+              preferredDuringSchedulingIgnoredDuringExecution: {
+                weight: 100,
                 nodeSelectorTerms: [{
                   local nodepools = [
                     'monitoring',
