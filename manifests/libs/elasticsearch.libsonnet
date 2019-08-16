@@ -99,7 +99,6 @@ function(name, namespace, app = name, role = 'all', http_port = 9200, transport_
                 'network.tcp.keep_alive': 'true',
                 'network.host': '0.0.0.0',
                 'network.publish_host': '_eth0_',
-                'thread_pool.bulk.queue_size': '2000',
                 'thread_pool.write.queue_size': '2000',
                 'transport.ping_schedule': '5s',
                 'ingest-geoip.enabled': 'false',
