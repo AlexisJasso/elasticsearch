@@ -29,6 +29,7 @@
         storage: '50Gi',
         env: {
           'ES_JAVA_OPTS': '-Xms8g -Xmx8g',
+          'indices.query.bool.max_clause_count': '4096',
         },
       },
       data: {
@@ -46,6 +47,7 @@
         storage: '150Gi',
         env: {
           'ES_JAVA_OPTS': '-Xms8g -Xmx8g',
+          'indices.query.bool.max_clause_count': '4096',
         },
       },
     },
@@ -82,6 +84,7 @@
         storage: '50Gi',
         env: {
           'ES_JAVA_OPTS': '-Xms8g -Xmx8g',
+          'indices.query.bool.max_clause_count': '4096',
         },
       },
       data: {
@@ -99,6 +102,7 @@
         storage: '150Gi',
         env: {
           'ES_JAVA_OPTS': '-Xms8g -Xmx8g',
+          'indices.query.bool.max_clause_count': '4096',
         },
       },
     },
@@ -135,6 +139,7 @@
         storage: '50Gi',
         env: {
           'ES_JAVA_OPTS': '-Xms8g -Xmx8g',
+          'indices.query.bool.max_clause_count': '4096',
         },
       },
       data: {
@@ -152,6 +157,7 @@
         storage: '150Gi',
         env: {
           'ES_JAVA_OPTS': '-Xms8g -Xmx8g',
+          'indices.query.bool.max_clause_count': '4096',
         },
       },
     },
@@ -188,6 +194,7 @@
         storage: '50Gi',
         env: {
           'ES_JAVA_OPTS': '-Xms8g -Xmx8g',
+          'indices.query.bool.max_clause_count': '4096',
         },
       },
       data: {
@@ -205,6 +212,7 @@
         storage: '150Gi',
         env: {
           'ES_JAVA_OPTS': '-Xms8g -Xmx8g',
+          'indices.query.bool.max_clause_count': '4096',
         },
       },
     },
@@ -241,6 +249,7 @@
         storage: '50Gi',
         env: {
           'ES_JAVA_OPTS': '-Xms8g -Xmx8g',
+          'indices.query.bool.max_clause_count': '4096',
         },
       },
       data: {
@@ -258,6 +267,7 @@
         storage: '250Gi',
         env: {
           'ES_JAVA_OPTS': '-Xms8g -Xmx8g',
+          'indices.query.bool.max_clause_count': '4096',
         },
       },
     },
