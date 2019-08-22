@@ -10,7 +10,7 @@
     cluster: 'ops.us-west-2',
     curator: {
       name: 'curator',
-      http_port: 9200,
+      http_port: '9200',
     },
     elasticsearch: {
       name: 'logging',
@@ -66,7 +66,7 @@
     cluster: 'staging.us-east-2',
     curator: {
       name: 'curator',
-      http_port: 9200,
+      http_port: '9200',
     },
     elasticsearch: {
       name: 'logging',
@@ -122,7 +122,7 @@
     cluster: 'staging.us-west-2',
     curator: {
       name: 'curator',
-      http_port: 9200,
+      http_port: '9200',
     },
     elasticsearch: {
       name: 'logging',
@@ -178,7 +178,7 @@
     cluster: 'production.us-east-1',
     curator: {
       name: 'curator',
-      http_port: 9200,
+      http_port: '9200',
     },
     elasticsearch: {
       name: 'logging',
@@ -234,7 +234,7 @@
     cluster: 'production.us-west-2',
     curator: {
       name: 'curator',
-      http_port: 9200,
+      http_port: '9200',
     },
     elasticsearch: {
       name: 'logging',
@@ -290,7 +290,7 @@
     cluster: 'ops.us-west-2',
     curator: {
       name: '%s-curator' % this.name,
-      http_port: 9201,
+      http_port: '9201',
     },
     elasticsearch: {
       name: this.namespace,
@@ -344,7 +344,7 @@
     cluster: 'ops.us-west-2',
     curator: {
       name: '%s-curator' % this.name,
-      http_port: 9202,
+      http_port: '9202',
     },
     elasticsearch: {
       name: this.namespace,
@@ -398,7 +398,7 @@
     cluster: 'staging.us-west-2',
     curator: {
       name: '%s-curator' % this.name,
-      http_port: 9202,
+      http_port: '9202',
     },
     elasticsearch: {
       name: this.namespace,
@@ -452,7 +452,7 @@
     cluster: 'staging.us-east-2',
     curator: {
       name: '%s-curator' % this.name,
-      http_port: 9202,
+      http_port: '9202',
     },
     elasticsearch: {
       name: this.namespace,
@@ -506,7 +506,7 @@
     cluster: 'production.us-west-2',
     curator: {
       name: '%s-curator' % this.name,
-      http_port: 9202,
+      http_port: '9202',
     },
     elasticsearch: {
       name: this.namespace,
@@ -560,7 +560,7 @@
     cluster: 'production.us-east-1',
     curator: {
       name: '%s-curator' % this.name,
-      http_port: 9202,
+      http_port: '9202',
     },
     elasticsearch: {
       name: this.namespace,
