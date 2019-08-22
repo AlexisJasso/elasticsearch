@@ -6,6 +6,7 @@ local es_cluster = utils.GetCluster(std.extVar('es-cluster'), es_clusters);
 
 local all() = {
   local name          = es_cluster.curator.name,
+  local http_port     = es_cluster.curator.http_port,
   local namespace     = es_cluster.namespace,
   local xcluster_host = '%s.%s.intor.io' % [es_cluster.elasticsearch.service, cluster.global_name],
 
@@ -26,11 +27,11 @@ local all() = {
                   ],
                   env: [
                     { name: 'ELASTIC_HOST', value: xcluster_host },
-                    { name: 'ELASTIC_PORT', value: '9200' },
+                    { name: 'ELASTIC_PORT', value: http_port },
                     { name: 'LOGLEVEL', value: 'INFO' },
                     { name: 'RETENTION_DAYS', value: '7' },
                   ],
-                  image: 'registry.outreach.cloud/curator:0.9.0',
+                  image: 'registry.outreach.cloud/curator:5.7.6',
                   name: 'curator',
                   volumeMounts: [
                     { name: '%s-config' % name, mountPath: '/var/curator/config' },
