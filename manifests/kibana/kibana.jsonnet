@@ -53,11 +53,11 @@ local all() = {
               },
             },
             ok.Container(name){
-              image: 'docker.elastic.co/kibana/kibana-oss:7.3.0',
+              image: 'docker.elastic.co/kibana/kibana-oss:6.6.1',
               env: [
                 { name: 'SERVER_NAME', value: host },
                 { name: 'ELASTICSEARCH_REQUESTTIMEOUT', value: '600000' },
-                { name: 'ELASTICSEARCH_HOSTS', value: 'http://%s:%s' % [es_cluster.name, es_cluster.elasticsearch.master.http_port] },
+                { name: 'ELASTICSEARCH_URL', value: 'http://%s:%s' % [es_cluster.name, es_cluster.elasticsearch.master.http_port] },
                 { name: 'MAP_INCLUDEELASTICMAPSSERVICE', value: 'false' },
               ],
               livenessProbe: {

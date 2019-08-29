@@ -76,7 +76,7 @@ function(name, namespace, app = name, role = 'all', http_port = 9200, transport_
           }],
           containers_:: {
             default: ok.Container('es') {
-              image: 'docker.elastic.co/elasticsearch/elasticsearch-oss:7.3.0',
+              image: 'docker.elastic.co/elasticsearch/elasticsearch-oss:6.6.1',
               resources: {
                 limits: {
                   memory: '64Gi',
@@ -94,17 +94,18 @@ function(name, namespace, app = name, role = 'all', http_port = 9200, transport_
               ],
               env_+:: {
                 'http.port': '%s' % http_port,
-                'transport.port': '%s' % transport_port,
+                'transport.tcp.port': '%s' % transport_port,
                 'ES_JAVA_OPTS': '-Xms32g -Xmx32g',
                 'NAMESPACE': namespace,
                 'network.tcp.keep_alive': 'true',
                 'network.host': '0.0.0.0',
                 'network.publish_host': '_eth0_',
+                'thread_pool.bulk.queue_size': '2000',
                 'thread_pool.write.queue_size': '2000',
                 'transport.ping_schedule': '5s',
                 'ingest-geoip.enabled': 'false',
-                'discovery.seed_hosts': '%s.%s.intor.io' % [name, cluster.global_name],
-                'cluster.initial_master_nodes': '%s-master-0,%s-master-1,%s-master-2' % [name, name, name],
+                'discovery.zen.minimum_master_nodes': '2',
+                'discovery.zen.ping.unicast.hosts': '%s.%s.intor.io' % [name, cluster.global_name],
                 'cluster.name': '%s-%s-%s' % [name, cluster.environment, cluster.region],
                 'node.name': ok.FieldRef('metadata.name'),
               },
