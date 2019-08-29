@@ -9,7 +9,7 @@ local exporters = {
   kube_prod: exporter.newExporter("kube-prod", "http://es-kube.ss-uw2-pd.intor.io:80"),
   kube_staging: exporter.newExporter("kube-staging", "http://es-kube.ss-uw1-stg.intor.io:80"),
   ingestitron_prod: exporter.newExporter("ingestitron-prod", "http://es-ingestitron.data1.intor.io:80"),
-  ingestitron_staging: exporter.newExporter("ingestitron-staging", "http://es-ingestitron.stagingdata1.intor.io"),
+  ingestitron_staging: exporter.newExporter("ingestitron-staging", "http://es-ingestitron.stagingdata1.intor.io:80"),
 };
 
 
