@@ -4,19 +4,18 @@ local es_ns = 'elasticsearch';
 {
   newExporter(suffix, address)::
     local all(
-      app = "es-exporter-%s" % suffix,
       namespace=es_ns, 
       name = "es-exporter-%s" % suffix,
       ) = {
       local exporter = self,
-      deployment: ok.Deployment(name, namespace, app) {
+      deployment: ok.Deployment(name, namespace) {
         spec+: {
           replicas: 1,
           strategy: {
             type: "RollingUpdate",
             rollingUpdate: {
-              maxSurge: 1,
-              maxUnavailable: 0,
+              maxSurge: 0,
+              maxUnavailable: 1,
             },
           },
           template+: {
@@ -45,7 +44,6 @@ local es_ns = 'elasticsearch';
                   resources: {
                     limits: {
                       memory: "2Gi",
-                      cpu: "1"
                     },
                     requests: {
                       cpu: "400m",
@@ -81,7 +79,7 @@ local es_ns = 'elasticsearch';
           },
         },
       },
-      service: ok.Service(name, namespace, app) {
+      service: ok.Service(name, namespace) {
         target_pod:: exporter.deployment.spec.template,
       },
       servicemonitor: ok.ServiceMonitor(name, namespace) {
@@ -97,6 +95,9 @@ local es_ns = 'elasticsearch';
             'external_elasticsearch_cluster',
           ],
         },
+      },
+      vpa: ok.VerticalPodAutoscaler(name, namespace) {
+        target_pod:: exporter.deployment.spec.template
       },
     };
   all()
