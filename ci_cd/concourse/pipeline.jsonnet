@@ -64,8 +64,36 @@ local elasticsearch_jobs  = [
   for es in es_clusters
 ];
 
+# Deploy elasticsearch exporters
+local exporters = '2. ES Exporters';
+local exporter_jobs = [
+  pipeline.newJob(
+    name = 'Deploy ES Exporters',
+    group = exporters,
+  ) {
+    steps:: [
+      {
+        get: 'source',
+        trigger: true,
+      },
+      pipeline.k8sDeploy(
+        debug = true,
+        cluster_name = 'ops.us-west-2',
+        namespace = 'elasticsearch',
+        manifests = [
+          'manifests/exporter/*.jsonnet',
+        ],
+        params = {
+          validation_retries: "100",
+        },
+      ),
+    ],
+    plan_: pipeline.steps(self.steps),
+  },
+];
+
 [
   pipeline {
-    jobs_: elasticsearch_jobs,
+    jobs_: elasticsearch_jobs + exporter_jobs,
   },
 ]
