@@ -23,7 +23,7 @@ local all() = {
         spec+: {
           containers+: [
             ok.Container('oauth2-proxy'){
-              image: 'registry.outreach.cloud/oauth2_proxy:2.2.1-alpha.outreach-1.0.8',
+              image: 'registry.outreach.cloud/oauth2_proxy:2.2.1-alpha.outreach-1.0.9',
               args: [
                 '-upstream=http://localhost:5601/',
                 '-provider=okta',
