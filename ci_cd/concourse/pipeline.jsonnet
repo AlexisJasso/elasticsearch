@@ -94,6 +94,6 @@ local exporter_jobs = [
 
 [
   pipeline {
-    jobs_: elasticsearch_jobs + exporter_jobs,
+    jobs_: exporter_jobs,
   },
 ]
